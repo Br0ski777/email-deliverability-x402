@@ -36,6 +36,79 @@ Do NOT use for single email validation -- use email_verify_address instead. Do N
         },
         required: ["domain"],
       },
+      outputSchema: {
+          "type": "object",
+          "properties": {
+            "domain": {
+              "type": "string",
+              "description": "Domain audited"
+            },
+            "spf": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "record": {
+                  "type": "string"
+                }
+              }
+            },
+            "dkim": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "selectors": {
+                  "type": "array"
+                }
+              }
+            },
+            "dmarc": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "policy": {
+                  "type": "string"
+                },
+                "record": {
+                  "type": "string"
+                }
+              }
+            },
+            "mx": {
+              "type": "object",
+              "properties": {
+                "records": {
+                  "type": "array"
+                },
+                "provider": {
+                  "type": "string"
+                }
+              }
+            },
+            "score": {
+              "type": "number",
+              "description": "Deliverability score 0-100"
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Issues found"
+            }
+          },
+          "required": [
+            "domain",
+            "spf",
+            "dkim",
+            "dmarc"
+          ]
+        },
     },
   ],
 };
