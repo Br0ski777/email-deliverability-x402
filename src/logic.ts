@@ -113,9 +113,9 @@ function getRecommendations(spf: AuditResult["spf"], dkim: AuditResult["dkim"], 
 }
 
 export function registerRoutes(app: Hono) {
-  app.get("/api/audit", async (c) => {
+  async function handleAudit(c: any, params: { domain?: string }) {
     await tryRequirePayment(0.005);
-    const domain = c.req.query("domain");
+    const domain = params.domain;
     if (!domain) return c.json({ error: "Missing required parameter: domain" }, 400);
 
     const cleanDomain = domain.replace(/^https?:\/\//, "").replace(/\/.*$/, "").toLowerCase();
@@ -132,5 +132,18 @@ export function registerRoutes(app: Hono) {
 
     const result: AuditResult = { domain: cleanDomain, spf, dkim, dmarc, mx, score, recommendations };
     return c.json(result);
+  }
+
+  app.get("/api/audit", async (c) => {
+    return handleAudit(c, { domain: c.req.query("domain") });
+  });
+
+  // POST mirror of the GET route above -- Bazaar (CDP) only reliably indexes
+  // POST payments with valid payloads (~82% conversion vs ~14% for GET-only
+  // resources, confirmed empirically). Same params, same logic, just body
+  // instead of query string.
+  app.post("/api/audit", async (c) => {
+    const body = await c.req.json().catch(() => ({}) as any);
+    return handleAudit(c, { domain: body.domain });
   });
 }
