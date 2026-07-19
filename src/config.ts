@@ -9,7 +9,7 @@ export const API_CONFIG: ApiConfig = {
     {
       method: "GET",
       path: "/api/audit",
-      price: "$0.005",
+      price: "$0.012",
       description: "Audit email deliverability for a domain — checks SPF, DKIM, DMARC, MX records",
       toolName: "email_audit_deliverability",
       toolDescription: `Use this when you need to audit email deliverability configuration for a domain. Returns structured JSON with authentication record analysis and a deliverability score 0-100.
@@ -113,7 +113,7 @@ Do NOT use for single email validation -- use email_verify_address instead. Do N
     {
       method: "POST",
       path: "/api/audit",
-      price: "$0.005",
+      price: "$0.012",
       description: "Audit email deliverability for a domain — checks SPF, DKIM, DMARC, MX records (POST variant)",
       toolName: "email_audit_deliverability",
       toolDescription: `Use this when you need to audit email deliverability configuration for a domain. Returns structured JSON with authentication record analysis and a deliverability score 0-100. POST variant of email_audit_deliverability -- same params passed as JSON body instead of query string.
